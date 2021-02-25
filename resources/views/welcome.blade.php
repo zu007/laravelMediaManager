@@ -40,7 +40,7 @@
         ],
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-        file_picker_callback(field_name, url, type, win) {
+       /* file_picker_callback(field_name, url, type, win) {
             // alert('addTablePopoverButtons');
 
             let field = win.document.getElementById(field_name)
@@ -49,7 +49,7 @@
             EventHub.listen('file_selected', (path) => {
                 if (field) field.value = path
             })
-        },
+        },*/
 
         // (optional) close the manager when pressing "OK"
         init_instance_callback(editor) {
@@ -57,6 +57,22 @@
                 $('.__Inmodal-editor-hide').click()
             })
         },
+		 file_picker_callback: function (callback, value, meta) {
+
+                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+                tinyMCE.activeEditor.windowManager.openUrl({
+                    url: 'http://127.0.0.1:8000/media',
+                    title: 'Filemanager',
+                    width: x * 0.8,
+                    height: y * 0.8,
+                    resizable: "yes",
+                    close_previous: "no",
+                    onMessage: (api, message) => {
+                        callback(message.content);
+                    }
+                });
+            }
     });
 
 </script>
